@@ -1,5 +1,4 @@
-from subprocess import call
-from util import ROOT, dict_to_list
+from util import ROOT, dict_to_list, call
 
 DATA_PATH = '%s/data/sumo' % ROOT
 SUMO_HOME = '/opt/sumo'
@@ -21,14 +20,14 @@ def sumo():
 
     print 'Generating trips to %s...' % trip_file
     trip_generator = '%s/tools/trip/randomTrips.py' % SUMO_HOME
-    args = {
+    args = dict_to_list({
         'python': trip_generator,
         '-e': str(SECONDS_IN_DAY),
         '-n': net_file,
         '-o': trip_file,
         '-r': rou_file,
-    }
-    call(dict_to_list(args))
+    })
+    call(args)
 
     print 'Running SUMO simulation to %s...' % out_file
     args = {

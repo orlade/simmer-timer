@@ -13,10 +13,13 @@ from sumo import sumo
 
 
 def profile(function, iterations=1, write=True):
-    def inner(_):
+    def inner(i):
+        print ' >>> START %s ITERATION %d' % (function.__name__, i)
         start = timer()
         function()
-        return timer() - start
+        delta = timer() - start
+        print ' >>> ITERATION %d COMPLETE (%d s)' % (i, delta)
+        return delta
 
     times = map(inner, xrange(iterations))
 

@@ -1,5 +1,4 @@
-from subprocess import call
-from util import dict_to_list, ROOT
+from util import dict_to_list, ROOT, call
 
 NETLOGO_HOME = '/opt/netlogo'
 
