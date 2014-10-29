@@ -22,7 +22,7 @@ def sumo():
     trip_generator = '%s/tools/trip/randomTrips.py' % SUMO_HOME
     args = dict_to_list({
         'python': trip_generator,
-        '-e': str(SECONDS_IN_DAY),
+        '-e': SECONDS_IN_HOUR,
         '-n': net_file,
         '-o': trip_file,
         '-r': rou_file,
@@ -35,7 +35,7 @@ def sumo():
         '--route-files': rou_file,
         '--additional-files': add_file,
         '--begin': 0,
-        '--end': 1,
-        '--time-to-teleport': -1,
+        '--end': SECONDS_IN_HOUR,
+        '--time-to-teleport': 0,
     }
     call(['sumo', '-W'] + dict_to_list(args))
