@@ -2,56 +2,14 @@
 """
 Simple performance profiling script.
 """
-from distutils.dir_util import mkpath
-import os
-import sys
-from subprocess import call
-from timeit import default_timer as timer
 import math
+import os
 from datetime import date
+from distutils.dir_util import mkpath
+from timeit import default_timer as timer
 
-SECONDS_IN_HOUR = 60 * 60
-SECONDS_IN_DAY = SECONDS_IN_HOUR * 24
-
-SUMO_HOME = '/opt/sumo'
-
-
-def dict_to_list(d):
-    return reduce(lambda xs, x: xs + map(str, x), map(list, d.items()), [])
-
-
-def sumo():
-    """
-    Generates random trips for a day in Eichstaett, then simulates and outputs hourly.
-    """
-    net_file = '%s/data/eich.net.xml' % root
-    rou_file = '%s/data/eich.rou.xml' % root
-    add_file = '%s/data/eich.add.xml' % root
-
-    trip_file = '%s/temp/eich.trip.xml' % root
-    out_file = '%s/temp/eich.out.xml' % root
-
-    print 'Generating trips to %s...' % trip_file
-    trip_generator = '%s/tools/trip/randomTrips.py' % SUMO_HOME
-    args = {
-        'python': trip_generator,
-        '-e': str(SECONDS_IN_DAY),
-        '-n': net_file,
-        '-o': trip_file,
-        '-r': rou_file,
-    }
-    call(dict_to_list(args))
-
-    print 'Running SUMO simulation to %s...' % out_file
-    args = {
-        '--net-file': net_file,
-        '--route-files': rou_file,
-        '--additional-files': add_file,
-        '--begin': 0,
-        '--end': 1,
-        '--time-to-teleport': -1,
-    }
-    call(['sumo', '-W'] + dict_to_list(args))
+from altruism import altruism
+from sumo import sumo
 
 
 def profile(function, iterations=1, write=True):
@@ -92,9 +50,8 @@ def clean_temp():
 
 
 if __name__ == '__main__':
-    root = os.path.abspath(os.path.dirname(sys.argv[0]))
-
-    profile(sumo, 10)
+    # profile(sumo, 1)
+    # profile(altruism, 1)
 
     clean_temp()
 

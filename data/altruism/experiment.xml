@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE experiments SYSTEM "behaviorspace.dtd">
+<experiments>
+  <experiment name="TestExperiment" repetitions="1" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="1000"/>
+    <metric>count patches with [pcolor = pink]</metric>
+    <metric>count patches with [pcolor = green]</metric>
+    <enumeratedValueSet variable="cost-of-altruism">
+      <value value="0.13"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="selfish-probability">
+      <value value="0.26"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="benefit-from-altruism">
+      <value value="0.48"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="disease">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="harshness">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="altruistic-probability">
+      <value value="0.26"/>
+    </enumeratedValueSet>
+  </experiment>
+</experiments>
