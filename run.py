@@ -4,7 +4,7 @@ Simple performance profiling script.
 """
 import math
 import os
-from datetime import date
+from datetime import datetime
 from distutils.dir_util import mkpath
 from timeit import default_timer as timer
 
@@ -32,7 +32,8 @@ def profile(function, iterations=1, write=True):
 
     if write:
         mkpath('results')
-        with open('results/%s.txt' % date.today().isoformat(), 'w') as f:
+        fname = 'results/%s-%s.txt' % (function.__name__, datetime.now().isoformat())
+        with open(fname, 'w') as f:
             f.write('\n'.join(map(str, data.items())))
 
     return data
@@ -50,8 +51,8 @@ def clean_temp():
 
 
 if __name__ == '__main__':
-    # profile(sumo, 1)
-    # profile(altruism, 1)
+    profile(sumo, 10)
+    profile(altruism, 10)
 
     clean_temp()
 
