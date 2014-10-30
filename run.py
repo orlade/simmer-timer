@@ -9,9 +9,9 @@ from distutils.dir_util import mkpath
 from timeit import default_timer as timer
 
 from altruism import altruism
+from sumo import randomDayHourly
 import docker
 import simmer
-from sumo import sumo
 
 
 def profile(function, iterations=1, write=True):
@@ -58,7 +58,7 @@ def clean_temp():
 if __name__ == '__main__':
     mkpath('temp')
 
-    profile(sumo, 10)
+    profile(randomDayHourly, 10)
     profile(altruism, 10)
 
     profile(docker.run_sumo, 1)
