@@ -9,6 +9,7 @@ from distutils.dir_util import mkpath
 from timeit import default_timer as timer
 
 from altruism import altruism
+import simmer
 from sumo import sumo
 
 
@@ -54,8 +55,17 @@ def clean_temp():
 
 
 if __name__ == '__main__':
+    mkpath('temp')
+
     profile(sumo, 10)
     profile(altruism, 10)
+
+    proc = simmer.setup()
+
+    profile(simmer.app('sumo'))
+    profile(simmer.app('altruism'))
+
+    simmer.teardown(proc)
 
     clean_temp()
 
