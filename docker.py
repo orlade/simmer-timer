@@ -10,7 +10,8 @@ IMAGES = [SUMO_IMAGE, ALTRUISM_IMAGE]
 
 
 def run_sumo():
-    docker_run_all(SUMO_IMAGE, sumo.randomDayHourly_calls())
+    opts = ['-v', '.:/opt/profile:ro']
+    docker_run_all(SUMO_IMAGE, sumo.randomDayHourly_calls('/opt/profile'), opts)
 
 
 def run_altruism():
@@ -19,9 +20,10 @@ def run_altruism():
     return docker_run_all(ALTRUISM_IMAGE, calls)
 
 
-def docker_run_all(image, calls):
-    return docker_run(image, ['sh', '-c', '"%s"' % calls_to_string(calls)])
+def docker_run_all(image,  calls, opts=[]):
+    opts += ['--entrypoint', '/bin/sh']
+    return docker_run(image, opts, ['-c', '"%s"' % calls_to_string(calls)])
 
 
-def docker_run(image, args):
-    return call(['sudo', 'docker', 'run', image] + args)
+def docker_run(image, args, opts=[]):
+    return call(['sudo', 'docker', 'run'] + opts + [image] + args)

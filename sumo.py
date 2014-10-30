@@ -1,21 +1,20 @@
 from util import ROOT, dict_to_list, call
 
-DATA_PATH = '%s/data/sumo' % ROOT
 SUMO_HOME = '/opt/sumo'
 
 SECONDS_IN_HOUR = 60 * 60
 SECONDS_IN_DAY = SECONDS_IN_HOUR * 24
 
 
-def randomDayHourly_calls():
+def randomDayHourly_calls(root_path=ROOT):
     calls = []
 
-    net_file = '%s/eich.net.xml' % DATA_PATH
-    rou_file = '%s/eich.rou.xml' % DATA_PATH
-    add_file = '%s/eich.add.xml' % DATA_PATH
+    net_file = '%s/data/sumo/eich.net.xml' % root_path
+    rou_file = '%s/data/sumo/eich.rou.xml' % root_path
+    add_file = '%s/data/sumo/eich.add.xml' % root_path
 
-    trip_file = '%s/temp/eich.trip.xml' % ROOT
-    out_file = '%s/temp/eich.out.xml' % ROOT
+    trip_file = '%s/temp/eich.trip.xml' % root_path
+    out_file = '%s/temp/eich.out.xml' % root_path
 
     trip_generator = '%s/tools/trip/randomTrips.py' % SUMO_HOME
     args = dict_to_list({
