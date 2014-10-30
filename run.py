@@ -58,8 +58,8 @@ def clean_temp():
 if __name__ == '__main__':
     mkpath('temp')
 
-    profile(randomDayHourly, 10)
-    profile(altruism, 10)
+    profile(randomDayHourly, 1)
+    profile(altruism, 1)
 
     profile(docker.run_sumo, 1)
     profile(docker.run_altruism, 1)
