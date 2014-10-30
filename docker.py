@@ -12,16 +12,19 @@ IMAGES = [SUMO_IMAGE, ALTRUISM_IMAGE]
 def run_sumo():
     docker_run_all(SUMO_IMAGE, sumo.randomDayHourly_calls())
 
-
 def run_altruism():
     calls = altruism.altruism_calls()
     return docker_run_all(ALTRUISM_IMAGE, calls)
 
 
-def docker_run_all(image,  calls, opts=[]):
+def docker_run_all(image,  calls, opts=None):
+    if opts is None:
+        opts = []
     opts += ['-v', '%s:%s' % (ROOT,ROOT), '--entrypoint', '/bin/sh']
     return docker_run(image, ['-c', '%s' % calls_to_string(calls)], opts)
 
 
-def docker_run(image, args, opts=[]):
+def docker_run(image, args, opts=None):
+    if opts is None:
+        opts = []
     return call(['sudo', 'docker', 'run'] + opts + [image] + args)
