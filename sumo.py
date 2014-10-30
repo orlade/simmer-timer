@@ -7,10 +7,9 @@ SECONDS_IN_HOUR = 60 * 60
 SECONDS_IN_DAY = SECONDS_IN_HOUR * 24
 
 
-def sumo():
-    """
-    Generates random trips for a day in Eichstaett, then simulates and outputs hourly.
-    """
+def randomDayHourly_calls():
+    calls = []
+
     net_file = '%s/eich.net.xml' % DATA_PATH
     rou_file = '%s/eich.rou.xml' % DATA_PATH
     add_file = '%s/eich.add.xml' % DATA_PATH
@@ -18,7 +17,6 @@ def sumo():
     trip_file = '%s/temp/eich.trip.xml' % ROOT
     out_file = '%s/temp/eich.out.xml' % ROOT
 
-    print 'Generating trips to %s...' % trip_file
     trip_generator = '%s/tools/trip/randomTrips.py' % SUMO_HOME
     args = dict_to_list({
         'python': trip_generator,
@@ -27,9 +25,8 @@ def sumo():
         '-o': trip_file,
         '-r': rou_file,
     })
-    call(args)
+    calls.append(args)
 
-    print 'Running SUMO simulation to %s...' % out_file
     args = {
         '--net-file': net_file,
         '--route-files': rou_file,
@@ -38,4 +35,16 @@ def sumo():
         '--end': SECONDS_IN_HOUR,
         '--time-to-teleport': 0,
     }
-    call(['sumo', '-W'] + dict_to_list(args))
+    calls.append(['sumo', '-W'] + dict_to_list(args))
+    return calls
+
+
+def randomDayHourly():
+    """
+    Generates random trips for a day in Eichstaett, then simulates and outputs hourly.
+    """
+    calls = randomDayHourly_calls()
+    print 'Generating trips...'
+    call(calls[0])
+    print 'Running SUMO simulation...'
+    return call(calls[1])

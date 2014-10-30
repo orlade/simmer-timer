@@ -1,14 +1,9 @@
 import httplib
 from subprocess import Popen, call
 import urllib
+from docker import SUMO_IMAGE, ALTRUISM_IMAGE, IMAGES
 
 SIMMER_URL = 'localhost:5000'
-
-SUMO_IMAGE = 'similitude/sumo-simmer'
-ALTRUISM_IMAGE = 'quay.io/simmer/netlogo-sample'
-# POSTGIS_IMAGE = 'similitude/sumo-simmer'
-# IMAGES = [SUMO_IMAGE, ALTRUISM_IMAGE, POSTGIS_IMAGE]
-IMAGES = [SUMO_IMAGE, ALTRUISM_IMAGE]
 
 
 def simmer_sumo():
@@ -51,11 +46,11 @@ def invoke(image, service, param_map):
         return conn.request('GET', url, params)
 
 
-def setup(images):
+def setup():
     proc = Popen(['../computome/serve.py'], shell=True)
 
     # Set up the requested images.
-    for image in images:
+    for image in IMAGES:
         conn = httplib.HTTPConnection(SIMMER_URL)
         params = urllib.urlencode({'docker_id': image})
         conn.request('POST', '/services/register', params)

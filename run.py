@@ -9,6 +9,7 @@ from distutils.dir_util import mkpath
 from timeit import default_timer as timer
 
 from altruism import altruism
+import docker
 import simmer
 from sumo import sumo
 
@@ -60,10 +61,13 @@ if __name__ == '__main__':
     profile(sumo, 10)
     profile(altruism, 10)
 
+    profile(docker.run_sumo, 1)
+    profile(docker.run_altruism, 1)
+
     proc = simmer.setup()
 
-    profile(simmer.app('sumo'))
-    profile(simmer.app('altruism'))
+    profile(simmer.app('sumo'), 1)
+    profile(simmer.app('altruism'), 1)
 
     simmer.teardown(proc)
 
