@@ -3,10 +3,9 @@ from util import ROOT, dict_to_list, call
 SUMO_HOME = '/opt/sumo'
 
 SECONDS_IN_HOUR = 60 * 60
-SECONDS_IN_DAY = SECONDS_IN_HOUR * 24
 
 
-def randomDayHourly_calls(root_path=ROOT):
+def randomHourMinutes_calls(root_path=ROOT):
     calls = []
 
     net_file = '%s/data/sumo/eich.net.xml' % root_path
@@ -38,11 +37,11 @@ def randomDayHourly_calls(root_path=ROOT):
     return calls
 
 
-def randomDayHourly():
+def randomHourMinutes():
     """
-    Generates random trips for a day in Eichstaett, then simulates and outputs hourly.
+    Generates random trips for an hour in Eichstaett, then simulates and outputs minutely.
     """
-    calls = randomDayHourly_calls()
+    calls = randomHourMinutes_calls()
     print 'Generating trips...'
     call(calls[0])
     print 'Running SUMO simulation...'

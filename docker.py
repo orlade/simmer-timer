@@ -10,7 +10,7 @@ IMAGES = [SUMO_IMAGE, ALTRUISM_IMAGE]
 
 
 def run_sumo():
-    docker_run_all(SUMO_IMAGE, sumo.randomDayHourly_calls())
+    docker_run_all(SUMO_IMAGE, sumo.randomHourMinutes_calls())
 
 def run_altruism():
     calls = altruism.altruism_calls()

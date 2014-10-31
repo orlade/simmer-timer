@@ -1,24 +1,25 @@
-import httplib
 from subprocess import Popen, call
-import urllib
+import requests
+import time
+from urllib import urlencode
 from docker import SUMO_IMAGE, ALTRUISM_IMAGE, IMAGES
 
-SIMMER_URL = 'localhost:5000'
+SIMMER_URL = 'http://localhost:5000'
 
 
 def simmer_sumo():
     with open('data/sumo/eich.net.xml') as f:
-        invoke(SUMO_IMAGE, 'randomDayHourly', {
-            'network': f
+        invoke('SumoService', 'randomHourMinutes', {}, {
+            '__file__network': f
         })
 
 
 def simmer_altruism():
-    invoke(ALTRUISM_IMAGE, 'altruism', {
-        'altruistic-probability': 0.26,
-        'selfish-probability': 0.26,
-        'cost-of-altruism': 0.13,
-        'benefit-from-altruism': 0.48,
+    invoke('NetLogoService', 'altruism', {
+        'altruisticProbability': 0.26,
+        'selfishProbability': 0.26,
+        'altruismCost': 0.13,
+        'altruismBenefit': 0.48,
         'disease': 0,
         'harshness': 0,
         'numTicks': 1000,
@@ -39,23 +40,20 @@ def app(name):
     raise Exception('Unknown app %s' % name)
 
 
-def invoke(image, service, param_map):
-    with httplib.HTTPConnection(SIMMER_URL) as conn:
-        params = urllib.urlencode(param_map)
-        url = '/services/invoke/%s/%s' % (image, service)
-        return conn.request('GET', url, params)
+def invoke(image, service, param_map, file_map=None):
+    url = '%s/packages/%s/%s/invoke' % (SIMMER_URL, image, service)
+    return requests.post(url, params=param_map, files=file_map)
 
 
 def setup():
-    proc = Popen(['../computome/serve.py'], shell=True)
+    #proc = Popen(['../computome/serve.py'], shell=True)
+    #time.sleep(1)
 
     # Set up the requested images.
     for image in IMAGES:
-        conn = httplib.HTTPConnection(SIMMER_URL)
-        params = urllib.urlencode({'docker_id': image})
-        conn.request('POST', '/services/register', params)
+        requests.post('%s/packages/register' % SIMMER_URL, params={'docker_id': image})
 
-    return proc
+    #return proc
 
 
 def teardown(proc):

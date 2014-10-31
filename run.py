@@ -4,23 +4,27 @@ Simple performance profiling script.
 """
 import math
 import os
+import time
 from datetime import datetime
 from distutils.dir_util import mkpath
 from timeit import default_timer as timer
 
 from altruism import altruism
-from sumo import randomDayHourly
+from sumo import randomHourMinutes
 import docker
 import simmer
 
 
-def profile(function, iterations=1, write=True):
+def profile(function, iterations=1, delay=0, write=True):
     def inner(i):
         print ' >>> START %s ITERATION %d' % (function.__name__, i)
         start = timer()
         function()
         delta = timer() - start
         print ' >>> ITERATION %d COMPLETE (%d s)' % (i, delta)
+        if delay:
+            print 'Sleeping for %d...' % delay
+            time.sleep(delay)
         return delta
 
     times = map(inner, xrange(iterations))
@@ -58,18 +62,19 @@ def clean_temp():
 if __name__ == '__main__':
     mkpath('temp')
 
-#    profile(randomDayHourly, 1)
-#    profile(altruism, 1)
+    profile(randomHourMinutes, 10)
+    profile(altruism, 10)
 
     profile(docker.run_sumo, 10)
     profile(docker.run_altruism, 10)
 
-    proc = simmer.setup()
+    #proc = simmer.setup()
 
-    profile(simmer.app('sumo'), 1)
-    profile(simmer.app('altruism'), 1)
-
-    simmer.teardown(proc)
+    #try:
+    #profile(simmer.app('sumo'), 10, 3)
+    #profile(simmer.app('altruism'), 10, 2)
+    #finally:
+     #   simmer.teardown(proc)
 
     clean_temp()
 
