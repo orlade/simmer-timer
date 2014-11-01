@@ -41,7 +41,8 @@ def profile(function, iterations=1, delay=0, write=True):
 
     if write:
         mkpath('results')
-        fname = 'results/%s-%s.txt' % (function.__name__, datetime.now().isoformat())
+        suffix = datetime.now().isoformat().replace(':', '_')
+        fname = 'results/%s-%s.txt' % (function.__name__, suffix)
         with open(fname, 'w') as f:
             f.write('\n'.join(map(str, data.items())))
 
