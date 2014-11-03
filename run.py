@@ -11,6 +11,7 @@ from timeit import default_timer as timer
 
 from altruism import altruism
 from sumo import randomHourMinutes
+from world import cityLanguage
 import docker
 import simmer
 
@@ -63,17 +64,20 @@ def clean_temp():
 if __name__ == '__main__':
     mkpath('temp')
 
-    profile(randomHourMinutes, 10)
-    profile(altruism, 10)
+    #profile(randomHourMinutes, 10)
+    #profile(altruism, 10)
+    #profile(cityLanguage, 10)
 
-    profile(docker.run_sumo, 10)
-    profile(docker.run_altruism, 10)
+    #profile(docker.run_sumo, 10)
+    #profile(docker.run_altruism, 10)
+    #profile(docker.run_world, 10)
 
-    #proc = simmer.setup()
+    proc = simmer.setup()
 
     #try:
     #profile(simmer.app('sumo'), 10, 3)
     #profile(simmer.app('altruism'), 10, 2)
+    profile(simmer.app('world'), 10, 2)
     #finally:
      #   simmer.teardown(proc)
 

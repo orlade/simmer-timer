@@ -1,8 +1,5 @@
-from subprocess import Popen, call
 import requests
-import time
-from urllib import urlencode
-from docker import SUMO_IMAGE, ALTRUISM_IMAGE, IMAGES
+from docker import IMAGES
 
 SIMMER_URL = 'http://localhost:5000'
 
@@ -26,8 +23,10 @@ def simmer_altruism():
     })
 
 
-def simmer_postgis():
-    pass
+def simmer_world():
+    invoke('H2WorldService', 'cityLanguage', {
+        'city': 'Melbourne',
+    })
 
 
 def app(name):
@@ -35,8 +34,8 @@ def app(name):
         return simmer_sumo
     if name == 'altruism':
         return simmer_altruism
-    if name == 'postgis':
-        return simmer_postgis
+    if name == 'world':
+        return simmer_world
     raise Exception('Unknown app %s' % name)
 
 
